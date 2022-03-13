@@ -25,6 +25,8 @@ _**Note:** The behavior of actions like this one is currently limited in the con
 - **Go:**
   - [gofmt](https://golang.org/cmd/gofmt)
   - [golint](https://github.com/golang/lint)
+- **Google API Linter:**
+  - [api-linter](https://linter.aip.dev)
 - **JavaScript:**
   - [ESLint](https://eslint.org)
   - [Prettier](https://prettier.io)
@@ -293,11 +295,48 @@ jobs:
           dotnet_format: true
 ```
 
+### API Linter Example (api-linter)
+
+```yml
+name: Lint
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.1'
+
+      - name: Install API linter
+        run: go install github.com/googleapis/api-linter/cmd/api-linter@latest
+
+      - name: Run linters
+        uses: sgammon/lint-action@latest
+        with:
+          api-linter: true
+```
+
 ## Configuration
 
 ### Linter-specific options
 
-`[linter]` can be one of `black`, `dotnet_format`, `erblint`, `eslint`, `flake8`, `gofmt`, `golint`, `mypy`, `oitnb`, `php_codesniffer`, `prettier`, `rubocop`, `stylelint`, `swift_format_official`, `swift_format_lockwood`, `swiftlint` and `xo`:
+`[linter]` can be one of `api-linter`, `black`, `dotnet_format`, `erblint`, `eslint`, `flake8`, `gofmt`, `golint`, `mypy`, `oitnb`, `php_codesniffer`, `prettier`, `rubocop`, `stylelint`, `swift_format_official`, `swift_format_lockwood`, `swiftlint` and `xo`:
 
 - **`[linter]`:** Enables the linter in your repository. Default: `false`
 - **`[linter]_args`**: Additional arguments to pass to the linter. Example: `eslint_args: "--max-warnings 0"` if ESLint checks should fail even if there are no errors and only warnings. Default: `""`
@@ -335,6 +374,7 @@ Some options are not be available for specific linters:
 
 | Linter                | auto-fixing | extensions |
 | --------------------- | :---------: | :--------: |
+| api-linter            |     ❌      |     ❌     |
 | black                 |     ✅      |     ✅     |
 | dotnet_format         |     ✅      |     ✅     |
 | erblint               |     ❌      |  ❌ (erb)  |

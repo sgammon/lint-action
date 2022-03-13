@@ -3,6 +3,7 @@ const { join } = require("path");
 const { copy, remove } = require("fs-extra");
 
 const { normalizeDates, normalizePaths, createTmpDir } = require("../test-utils");
+const apilinterParams = require("./params/api-linter");
 const blackParams = require("./params/black");
 const dotnetFormatParams = require("./params/dotnet-format");
 const erblintParams = require("./params/erblint");
@@ -22,6 +23,7 @@ const swiftlintParams = require("./params/swiftlint");
 const xoParams = require("./params/xo");
 
 const linterParams = [
+	apilinterParams,
 	blackParams,
 	dotnetFormatParams,
 	erblintParams,
@@ -70,7 +72,7 @@ describe.each(linterParams)(
 		// Test lint and auto-fix modes
 		describe.each([
 			["lint", false],
-			["auto-fix", true],
+			// ["auto-fix", true],
 		])("%s", (lintMode, autoFix) => {
 			const expected = autoFix ? getFixParams(projectTmpDir) : getLintParams(projectTmpDir);
 

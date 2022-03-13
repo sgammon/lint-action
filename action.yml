@@ -416,6 +416,28 @@ inputs:
     required: false
     default: ""
 
+  # API Linter
+
+  apilinter:
+    description: Enable or disable Google API Linter
+    required: false
+    default: "false"
+  apilinter_args:
+    description: Additional arguments to pass to the linter
+    required: false
+    default: ""
+  apilinter_dir:
+    description: Directory where the API Linter command should be run
+    required: false
+  apilinter_extensions:
+    description: Extensions of files to check containing proto definitions
+    required: false
+    default: "proto"
+  apilinter_command_prefix:
+    description: Shell command to prepend to the linter command
+    required: false
+    default: ""
+
 runs:
   using: node12
   main: ./dist/index.js

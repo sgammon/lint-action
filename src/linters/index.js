@@ -1,3 +1,4 @@
+const APILinter = require("./api-linter");
 const Black = require("./black");
 const DotnetFormat = require("./dotnet-format");
 const Erblint = require("./erblint");
@@ -18,6 +19,7 @@ const XO = require("./xo");
 
 const linters = {
 	// Linters
+	apilinter: APILinter,
 	erblint: Erblint,
 	eslint: ESLint,
 	flake8: Flake8,
